@@ -1,1 +1,2 @@
 # Advanced_Methodologies_and_Technologies_in_Medical_Patient_Data_Management
+his project focuses on building a secure, GUI-based data management system for medical patients using advanced technologies in data analytics. It enables healthcare professionals to log in securely, manage patient records, and perform analytical operations on medical data. The goal is to enhance patient care and streamline hospital data handling through effective visualization, security, and compliance.
