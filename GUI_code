@@ -1,0 +1,122 @@
+import customtkinter as ctk
+from tkinter import messagebox
+
+# Credentials
+VALID_USERNAME = "admin"
+VALID_PASSWORD = "admin123"
+
+# UI Theme
+ctk.set_appearance_mode("light")
+ctk.set_default_color_theme("blue")
+
+# ---------------- LOGIN WINDOW ----------------
+class LoginWindow(ctk.CTk):
+    def _init_(self):
+        super()._init_()
+        self.title("Login | Quality Care")
+        self.geometry("1200x800")  # Big login page
+
+        # Title
+        ctk.CTkLabel(self, text="QUALITY CARE", font=("Arial Black", 52), text_color="#0077b6").pack(pady=(70, 10))
+        ctk.CTkLabel(self, text="Advanced Technologies in Patient Data Management",
+                     font=("Arial", 22), text_color="#333").pack(pady=(0, 40))
+
+        # Username input
+        user_frame = ctk.CTkFrame(self, fg_color="transparent")
+        user_frame.pack(pady=30)
+        ctk.CTkLabel(user_frame, text="👤", font=("Arial", 42)).pack(side="left", padx=10)
+        self.username = ctk.CTkEntry(user_frame, placeholder_text="Username", font=("Arial", 18), width=350)
+        self.username.pack(side="left")
+
+        # Password input
+        pass_frame = ctk.CTkFrame(self, fg_color="transparent")
+        pass_frame.pack(pady=30)
+        ctk.CTkLabel(pass_frame, text="🔒", font=("Arial", 42)).pack(side="left", padx=10)
+        self.password = ctk.CTkEntry(pass_frame, placeholder_text="Password", font=("Arial", 18), width=350, show="*")
+        self.password.pack(side="left")
+
+        # Login Button
+        self.login_btn = ctk.CTkButton(self, text="Login", font=("Arial", 20), height=50, width=180, command=self.check_login)
+        self.login_btn.pack(pady=50)
+
+    def check_login(self):
+        if self.username.get().strip() == VALID_USERNAME and self.password.get().strip() == VALID_PASSWORD:
+            self.destroy()
+            open_dashboard()
+        else:
+            messagebox.showerror("Login Failed", "Invalid username or password.")
+
+# ---------------- DASHBOARD ----------------
+class DashboardGUI(ctk.CTk):
+    def _init_(self):
+        super()._init_()
+        self.title("Dashboard | Quality Care")
+        self.geometry("1400x900")
+
+        # Top Navbar
+        top_frame = ctk.CTkFrame(self, height=60, fg_color="#f0f0f0")
+        top_frame.pack(fill="x")
+
+        for label in ["FAQ", "Fees & Insurance", "Request Appointment", "Emergency"]:
+            ctk.CTkButton(top_frame, text=label, font=("Arial", 16), fg_color="transparent", text_color="black",
+                          hover_color="#d0d0d0").pack(side="right", padx=20)
+
+        # Back Button
+        ctk.CTkButton(top_frame, text="← Back to Login", font=("Arial", 15), text_color="black",
+                      fg_color="#e0e0e0", hover_color="#c0c0c0", command=self.back_to_login).pack(side="left", padx=20)
+
+        # Banner
+        banner = ctk.CTkFrame(self, fg_color="#e8f4fc", height=250)
+        banner.pack(fill="x", pady=40, padx=40)
+        ctk.CTkLabel(banner, text="QUALITY CARE", font=("Arial Black", 48), text_color="#0077b6").pack(pady=(30, 10))
+        ctk.CTkLabel(banner, text="Advanced Technologies in Patient Data Management",
+                     font=("Arial", 22), text_color="#333").pack()
+        ctk.CTkButton(banner, text="Learn More", corner_radius=25, font=("Arial", 16), height=45).pack(pady=20)
+
+        # Cards Section
+        card_frame = ctk.CTkFrame(self, fg_color="transparent")
+        card_frame.pack(pady=50)
+
+        card_info = [
+            ("🔐", "Data Security", "Encryption, HIPAA Compliance"),
+            ("🧬", "AI & Analytics", "Smart diagnosis, Predictive monitoring"),
+            ("💾", "Backup Data", "Daily cloud backups & recovery"),
+            ("🗂", "Access Control", "Role-based visibility & security"),
+        ]
+
+        for i, (icon, title, desc) in enumerate(card_info):
+            card = ctk.CTkFrame(card_frame, width=320, height=320, corner_radius=25)
+            card.grid(row=0, column=i, padx=25, pady=10)
+            card.pack_propagate(False)
+
+            inner = ctk.CTkFrame(card, fg_color="transparent")
+            inner.pack(expand=True)
+
+            # 👇 Fixed width to align emojis consistently
+            ctk.CTkLabel(inner, text=icon, font=("Arial", 100), width=150, anchor="center").pack(pady=(20, 10))
+            ctk.CTkLabel(inner, text=title, font=("Arial Bold", 20)).pack(pady=5)
+            ctk.CTkLabel(inner, text=desc, font=("Arial", 14), wraplength=250, justify="center").pack(pady=(2, 15))
+
+        # Footer
+        ctk.CTkLabel(self, text="© 2025 HealthFlex | Mini Project UI Only",
+                     font=("Arial", 14), text_color="gray").pack(side="bottom", pady=30)
+
+        self.mainloop()
+
+    def back_to_login(self):
+        self.destroy()
+        open_login()
+
+
+# ---------------- FLOW CONTROLLERS ----------------
+def open_login():
+    login_window = LoginWindow()
+    login_window.mainloop()
+
+def open_dashboard():
+    dashboard_window = DashboardGUI()
+    dashboard_window.mainloop()
+
+# ---------------- RUN APP ----------------
+if _name_ == "_main_":
+    open_login()
